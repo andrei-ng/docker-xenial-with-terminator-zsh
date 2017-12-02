@@ -7,6 +7,7 @@ LABEL Description="Ubuntu Xenial 16.04 with mapped NVIDIA driver from the host" 
 # Arguments
 ARG user=docker
 ARG uid=1000
+ARG shell=/bin/bash
 
 # ------------------------------------------ Install required (&useful) packages --------------------------------------
 RUN apt-get update && apt-get install -y \
@@ -22,7 +23,6 @@ curl \
 htop \
 python3-pip python-pip  \
 software-properties-common python-software-properties \
-gdb \
 zsh screen tree \
 sudo ssh synaptic vim \
 x11-apps build-essential \
@@ -36,9 +36,10 @@ RUN sudo apt-get clean && sudo apt-get update -y && sudo apt-get install -y loca
 RUN sudo locale-gen en_US.UTF-8  
 ENV LANG en_US.UTF-8  
 ENV LANGUAGE en_US:en  
+ENV LC_ALL en_US.UTF-8
 
 # Crete and add user
-RUN useradd -ms /bin/bash ${user}
+RUN useradd -ms ${shell} ${user}
 ENV USER=${user}
 
 RUN export uid=${uid} gid=${uid}
@@ -65,7 +66,7 @@ RUN sed -i -e 's/robbyrussell/refined/g' $HOME/.zshrc
 # $HOME does not seem to work with the COPY directive
 COPY custom_files/bash_aliases /home/${user}/.bash_aliases
 COPY inside.sh /home/${user}/inside.sh
-# Make user the owner of the copied files 
+# Make ${user} the owner of the copied files 
 RUN sudo chown ${user}:${user} /home/${user}/.bash_aliases
 RUN sudo chown ${user}:${user} /home/${user}/inside.sh
 RUN sudo chmod +x /home/${user}/inside.sh
@@ -88,8 +89,8 @@ COPY custom_files/terminator_config /home/${user}/.config/terminator/config
 
 # In the newly loaded container sometimes you can't do `apt install <package>
 # unless you do a `apt update` first.  So run `apt update` as last step
-# NOTE: bash auto-completion may have to be enabled manually from /etc/bash.bashrc RUN apt-get update -y
-# CMD ["terminator"]
-ENTRYPOINT $HOME/inside.sh ; terminator
+# NOTE: bash auto-completion may have to be enabled manually from /etc/bash.bashrc
+RUN sudo apt-get update -y
 
-
+# Using the "exec" form for the Entrypoint command
+ENTRYPOINT ["./inside.sh", "terminator"]
