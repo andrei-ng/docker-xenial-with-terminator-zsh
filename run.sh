@@ -1,12 +1,14 @@
 #!/usr/bin/env bash
 
 # Check args
-if [ "$#" -ne 1 ]; then
-  echo "usage: ./run.sh GIVEN_IMAGE_NAME"
+if [ "$#" -lt 1 ]; then
+  echo "usage: ./run.sh IMAGE_NAME"
   return 1
 fi
 
 set -e
+
+IMAGE_NAME=$1 && shift 1
 
 # Run the container with shared X11, shared network interface
 docker run --rm \
@@ -17,4 +19,4 @@ docker run --rm \
   -v $HOME/.Xauthority:/root/.Xauthority -e XAUTHORITY=/root/.Xauthority \
   -e DISPLAY=$DISPLAY \
   -v $HOME/Projects/devs/ROS:/extern/ROS \
-  -it $1
+  -it $IMAGE_NAME "$@"
