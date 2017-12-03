@@ -7,6 +7,7 @@ The image is customized such that
 * [Oh My ZSH](http://ohmyz.sh/) is installed and configured for the non-root user
 * docker containers are launched with [`terminator`](https://gnometerminator.blogspot.nl/p/introduction.html) as the default application (`gnome-terminal` could have been used as well)
 * host mounted volumes are re-bound to a `data` folder within the container's user `$HOME` folder 
+* bash complementation for Docker image names when using <TAB> in combination with `./run.sh` in a terminal running `bash`
 
 ### Purpose
 
@@ -46,6 +47,14 @@ Run the container and install Firefox from the terminal,
 sudo apt install firefox
 ```
 After installation, launch Firefox from the terminal. You are now running Firefox from a Docker container :smiley:.
+
+### Bash auto-completion
+
+When using bash as your shell, source the [bash_custom_completion.sh](./custom_files/bash_custom_completion.sh) script. Now you should be able to get the available docker images on your system whenever you type 
+```
+./run.sh <TAB>
+```
+
 
 ## References
 
