@@ -63,13 +63,16 @@ RUN ln -s $HOME/.oh-my-zsh/custom/pure/pure.zsh-theme $HOME/.oh-my-zsh/custom/
 RUN ln -s $HOME/.oh-my-zsh/custom/pure/async.zsh $HOME/.oh-my-zsh/custom/
 RUN sed -i -e 's/robbyrussell/refined/g' $HOME/.zshrc
 
-# $HOME does not seem to work with the COPY directive
-COPY custom_files/bash_aliases /home/${user}/.bash_aliases
-COPY inside.sh /home/${user}/inside.sh
+# Copy Terminator Configuration file
+# '$HOME' does not seem to work with the COPY directive
+RUN mkdir -p $HOME/.config/terminator/
+COPY config_files/terminator_config /home/${user}/.config/terminator/config
+COPY config_files/bash_aliases /home/${user}/.bash_aliases
+COPY entrypoint.sh /home/${user}/entrypoint.sh
+RUN sudo chmod +x /home/${user}/entrypoint.sh
+
 # Make ${user} the owner of the copied files 
-RUN sudo chown ${user}:${user} /home/${user}/.bash_aliases
-RUN sudo chown ${user}:${user} /home/${user}/inside.sh
-RUN sudo chmod +x /home/${user}/inside.sh
+RUN sudo chown -R ${user}:${user} /home/${user}/
 
 # Add the bash aliases to zsh rc as well
 RUN cat $HOME/.bash_aliases >> $HOME/.zshrc
@@ -83,14 +86,10 @@ EXPOSE 22
 # Switch to user's HOME folder
 WORKDIR /home/${user}
 
-# Configure Terminator
-RUN mkdir -p $HOME/.config/terminator/
-COPY custom_files/terminator_config /home/${user}/.config/terminator/config
-
 # In the newly loaded container sometimes you can't do `apt install <package>
 # unless you do a `apt update` first.  So run `apt update` as last step
 # NOTE: bash auto-completion may have to be enabled manually from /etc/bash.bashrc
 RUN sudo apt-get update -y
 
 # Using the "exec" form for the Entrypoint command
-ENTRYPOINT ["./inside.sh", "terminator"]
+ENTRYPOINT ["./entrypoint.sh", "terminator"]

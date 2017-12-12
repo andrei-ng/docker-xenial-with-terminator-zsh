@@ -3,7 +3,7 @@
 This repository is an example of a Docker Image customization having as base image dockerhub's Ubuntu 16.04 (Xenial).
 
 The image is customized such that 
-* the docker image is created with a non-root user
+* the docker image is created with a non-root user (defaul user-name `docker`)
 * [Oh My ZSH](http://ohmyz.sh/) is installed and configured for the non-root user
 * docker containers are launched with [`terminator`](https://gnometerminator.blogspot.nl/p/introduction.html) as the default application (`gnome-terminal` could have been used as well)
 * host mounted volumes are re-bound to a `data` folder within the container's user `$HOME` folder 
@@ -21,8 +21,8 @@ In a terminal run [./build.sh](./build.sh) to build a docker image with the name
 ./build.sh GIVEN_IMAGE_NAME
 ```
 
-#### The start-up `inside.sh` script
-The bash script [inside.sh](./inside.sh) will be copied at build time into the Docker image and will be ran each time the container is ran. The script currently _bind mounts_ the `extern` _volume_ into the `$HOME/data` folder of the `non-root` user.
+#### The ENTRYPOINT `entrypoint.sh` script
+The bash script [entrypoint.sh](./entrypoint.sh) will be copied at build time into the Docker image and will be ran as the default _entrypoint_ when the container is launched. The script currently _bind mounts_ the `extern` _volume_ into the `$HOME/data` folder of the `non-root` user.
 
 ### Running a container
 
@@ -50,9 +50,9 @@ After installation, launch Firefox from the terminal. You are now running Firefo
 
 ### Bash auto-completion
 
-When using bash as your shell, source the [bash_custom_completion.sh](./custom_files/bash_custom_completion.sh) script. Now you should be able to get the available docker images on your system whenever you type 
+When using bash as your shell, source the [bash_custom_completion.sh](./config_files/bash_custom_completion.sh) script. Now you should be able to get the available docker images on your system whenever you type 
 ```
-./run.sh <TAB>
+./run.sh <TAB><TAB>
 ```
 
 
