@@ -2,7 +2,7 @@ FROM ubuntu:xenial
 
 MAINTAINER Andrei Gherghescu <gandrein@gmail.com>
 
-LABEL Description="Ubuntu Xenial 16.04 with mapped NVIDIA driver from the host" Version="1.0"
+LABEL Description="Ubuntu Xenial 16.04 with NVIDIA driver support and custom shell enviroment" Version="1.0"
 
 # Arguments
 ARG user=docker
@@ -11,29 +11,27 @@ ARG shell=/bin/bash
 
 # ------------------------------------------ Install required (&useful) packages --------------------------------------
 RUN apt-get update && apt-get install -y \
-lsb-release \
-mesa-utils \
-git \
-subversion \
-nano \
-terminator \
-gnome-terminal \
-wget \
-curl \
-htop \
-python3-pip python-pip  \
-software-properties-common python-software-properties \
-zsh screen tree \
-sudo ssh synaptic vim \
-x11-apps build-essential \
-libcanberra-gtk*
+	lsb-release locales \
+	mesa-utils \
+	git \
+	subversion \
+	nano \
+	terminator \
+	gnome-terminal \
+	wget \
+	curl \
+	htop \
+	python3-pip python-pip  \
+	software-properties-common python-software-properties \
+	zsh screen tree \
+	sudo ssh synaptic vim \
+	x11-apps build-essential \
+	libcanberra-gtk* \
+ && locale-gen en_US.UTF-8 \
+ && rm -rf /var/lib/apt/lists/* \
+ && apt-get clean
 
-# Install python pip(s)
-RUN sudo -H pip2 install -U pip numpy && sudo -H pip3 install -U pip numpy
-
-# Configure timezone and locale
-RUN sudo apt-get clean && sudo apt-get update -y && sudo apt-get install -y locales
-RUN sudo locale-gen en_US.UTF-8  
+# Configure timezone and locale 
 ENV LANG en_US.UTF-8  
 ENV LANGUAGE en_US:en  
 ENV LC_ALL en_US.UTF-8
@@ -50,18 +48,20 @@ RUN \
   echo "${user}:x:${uid}:" >> /etc/group && \
   echo "${user} ALL=(ALL) NOPASSWD: ALL" > "/etc/sudoers.d/${user}" && \
   chmod 0440 "/etc/sudoers.d/${user}"
-  RUN chown ${uid}:${uid} -R "/home/${user}"
+# RUN chown ${uid}:${uid} -R "/home/${user}"
 
 # Switch to user
 USER ${user}
 
+# Install python pip(s)
+RUN sudo -H pip2 install -U pip numpy && sudo -H pip3 install -U pip numpy
+
 # Install and configure OhMyZSH
-RUN wget https://github.com/robbyrussell/oh-my-zsh/raw/master/tools/install.sh -O - | zsh || true
-# RUN chsh -s /usr/bin/zsh ${user}
-RUN git clone https://github.com/sindresorhus/pure $HOME/.oh-my-zsh/custom/pure
-RUN ln -s $HOME/.oh-my-zsh/custom/pure/pure.zsh-theme $HOME/.oh-my-zsh/custom/
-RUN ln -s $HOME/.oh-my-zsh/custom/pure/async.zsh $HOME/.oh-my-zsh/custom/
-RUN sed -i -e 's/robbyrussell/refined/g' $HOME/.zshrc
+RUN wget https://github.com/robbyrussell/oh-my-zsh/raw/master/tools/install.sh -O - | zsh || true \
+ && git clone https://github.com/sindresorhus/pure $HOME/.oh-my-zsh/custom/pure \
+ && ln -s $HOME/.oh-my-zsh/custom/pure/pure.zsh-theme $HOME/.oh-my-zsh/custom/ \
+ && ln -s $HOME/.oh-my-zsh/custom/pure/async.zsh $HOME/.oh-my-zsh/custom/ \
+ && sed -i -e 's/robbyrussell/refined/g' $HOME/.zshrc
 
 # Copy Terminator Configuration file
 # '$HOME' does not seem to work with the COPY directive
@@ -72,7 +72,7 @@ COPY entrypoint.sh /home/${user}/entrypoint.sh
 RUN sudo chmod +x /home/${user}/entrypoint.sh
 
 # Make ${user} the owner of the copied files 
-RUN sudo chown -R ${user}:${user} /home/${user}/
+# RUN sudo chown -R ${user}:${user} /home/${user}/
 
 # Add the bash aliases to zsh rc as well
 RUN cat $HOME/.bash_aliases >> $HOME/.zshrc
@@ -85,11 +85,6 @@ EXPOSE 22
 
 # Switch to user's HOME folder
 WORKDIR /home/${user}
-
-# In the newly loaded container sometimes you can't do `apt install <package>
-# unless you do a `apt update` first.  So run `apt update` as last step
-# NOTE: bash auto-completion may have to be enabled manually from /etc/bash.bashrc
-RUN sudo apt-get update -y
 
 # Using the "exec" form for the Entrypoint command
 ENTRYPOINT ["./entrypoint.sh", "terminator"]
