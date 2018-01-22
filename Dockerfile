@@ -2,7 +2,7 @@ FROM ubuntu:xenial
 
 MAINTAINER Andrei Gherghescu <gandrein@gmail.com>
 
-LABEL Description="Ubuntu Xenial 16.04 with NVIDIA driver support and custom shell enviroment" Version="1.0"
+LABEL Description="Ubuntu Xenial 16.04 with custom shell environment" Version="1.0"
 
 # Arguments
 ARG user=docker
@@ -28,6 +28,7 @@ RUN apt-get update && apt-get install -y \
 	x11-apps build-essential \
 	libcanberra-gtk* \
  && locale-gen en_US.UTF-8 \
+ && pip2 install numpy && pip3 install numpy \
  && rm -rf /var/lib/apt/lists/* \
  && apt-get clean
 
@@ -53,9 +54,6 @@ RUN \
 # Switch to user
 USER ${user}
 
-# Install python pip(s)
-RUN sudo -H pip2 install -U pip numpy && sudo -H pip3 install -U pip numpy
-
 # Install and configure OhMyZSH
 RUN wget https://github.com/robbyrussell/oh-my-zsh/raw/master/tools/install.sh -O - | zsh || true \
  && git clone https://github.com/sindresorhus/pure $HOME/.oh-my-zsh/custom/pure \
@@ -69,7 +67,10 @@ RUN mkdir -p $HOME/.config/terminator/
 COPY config_files/terminator_config /home/${user}/.config/terminator/config
 COPY config_files/bash_aliases /home/${user}/.bash_aliases
 COPY entrypoint.sh /home/${user}/entrypoint.sh
-RUN sudo chmod +x /home/${user}/entrypoint.sh
+RUN sudo chmod +x /home/${user}/entrypoint.sh \
+ && sudo chown ${user}:${user} /home/${user}/entrypoint.sh \
+  	/home/${user}/.config/terminator/config \
+  	 /home/${user}/.bash_aliases
 
 # Make ${user} the owner of the copied files 
 # RUN sudo chown -R ${user}:${user} /home/${user}/
