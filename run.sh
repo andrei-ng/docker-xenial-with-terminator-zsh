@@ -26,5 +26,4 @@ docker run --rm \
   -v /tmp/.X11-unix:/tmp/.X11-unix:rw \
   -v $HOME/.Xauthority:$home_folder/.Xauthority -e XAUTHORITY=$home_folder/.Xauthority \
   -e DISPLAY=$DISPLAY \
-  -v $HOME/Projects/devs/ROS:/extern/ROS \
   -it $IMAGE_NAME "$@"
