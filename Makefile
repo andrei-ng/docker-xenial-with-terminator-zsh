@@ -6,10 +6,10 @@ help: ## This help.
 .DEFAULT_GOAL := help
 
 # DOCKER TASKS
-xenial-terminator-zsh: ## Build Xenial Custom Enviroment Container | (no OpenGL/NVIDIA)
+xenial-terminator-zsh: ## Build Xenial Custom Enviroment Container | (non NVIDIA)
 	cd no-opengl; ./build.sh codedookie/xenial:terminator-zsh 
 	@printf "\n\033[92mDocker Image: codedookie/xenial-terminator-zsh\033[0m\n"
-xenial-terminator-zsh-opengl: ## Build Xenial Custom Enviroment Container | (with OpenGL/NVIDIA)
-	cd nvidia-opengl; ./build.sh codedookie/xenial:terminator-zsh-nvidia-opengl
+xenial-terminator-zsh-opengl: ## Build Xenial Custom Enviroment Container | (with NVIDIA/OpenGL)
+	cd nvidia-opengl; ./build.sh codedookie/xenial:terminator-zsh-nvidia
 	@printf "\n\033[92mDocker Image: codedookie/xenial:terminator-zsh-nvidia-opengl\033[0m\n"
 
