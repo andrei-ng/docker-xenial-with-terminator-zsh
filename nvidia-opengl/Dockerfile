@@ -72,8 +72,10 @@ RUN sudo chmod +x /home/${user}/entrypoint.sh \
   	/home/${user}/.config/terminator/config \
   	 /home/${user}/.bash_aliases
 
-# Make ${user} the owner of the copied files 
-# RUN sudo chown -R ${user}:${user} /home/${user}/
+# nvidia-docker hooks
+LABEL com.nvidia.volumes.needed="nvidia_driver"
+ENV PATH /usr/local/nvidia/bin:${PATH}
+ENV LD_LIBRARY_PATH /usr/local/nvidia/lib:/usr/local/nvidia/lib64:${LD_LIBRARY_PATH}
 
 # Add the bash aliases to zsh rc as well
 RUN cat $HOME/.bash_aliases >> $HOME/.zshrc
