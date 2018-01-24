@@ -7,8 +7,11 @@ help: ## This help.
 
 # DOCKER TASKS
 xenial-terminator-zsh: ## Build Xenial Custom Enviroment Container | (non NVIDIA)
-	cd generic; ./build.sh codedookie/xenial:terminator-zsh 
-	@printf "\n\033[92mDocker Image: codedookie/xenial-terminator-zsh\033[0m\n"
-xenial-terminator-zsh-nvidia: ## Build Xenial Custom Enviroment Container | (with NVIDIA/OpenGL)
-	cd nvidia-opengl; ./build.sh codedookie/xenial:terminator-zsh-nvidia
-	@printf "\n\033[92mDocker Image: codedookie/xenial:terminator-zsh-nvidia\033[0m\n"
+	cd generic; ./build.sh codookie/xenial:terminator-zsh 
+	@printf "\n\033[92mDocker Image: codookie/xenial-terminator-zsh\033[0m\n"
+xenial-terminator-nvidia: ## Build Xenial Custom Enviroment Container | (with NVIDIA & OpenGL)
+	cd nvidia-opengl; ./build.sh codookie/xenial:terminator-nvidia
+	@printf "\n\033[92mDocker Image: codookie/xenial:terminator-zsh-nvidia\033[0m\n"
+xenial-terminator-cuda: ## Build Xenial Custom Enviroment Container | (with NVIDIA cuDNN)
+	cd nvidia-cudnn; ./build.sh codookie/xenial:terminator-cuda
+	@printf "\n\033[92mDocker Image: codookie/xenial:terminator-cuda\033[0m\n"
