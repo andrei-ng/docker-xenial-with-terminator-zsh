@@ -14,7 +14,7 @@ The image is customized such that:
 The user has the option of building three different types of Docker images
 1. a generic image for non-Nvidia based PCs
 2. an image with support for Nvidia Graphics and OpenGL by using [nvidia-docker (1.0)](https://github.com/NVIDIA/nvidia-docker/wiki/Installation-(version-1.0))
-3. an image with the Nvidia CUDA toolkit and cuDNN library
+3. an image with the Nvidia CUDA toolkit and cuDNN library and support for OpenGL by using [nvidia-docker (1.0)](https://github.com/NVIDIA/nvidia-docker/wiki/Installation-(version-1.0))
 
 ### Purpose
 
@@ -29,17 +29,9 @@ For the 2. and 3. type of images to succesfully run GUIs or make use of the cuDN
 
 ### Building the image
 
-#### Makefile based
+The [Makefile](Makefile) contained in the repository allows you to create either of the three images with the `make` command. The `make` utility will provide the autocompletion for the image name you want to build.
 
-The [Makefile](Makefile) contained in the repository allows you to create either of the three images with the `make` command. The `make` utility will provide the autocompletion for the image name you want to build. 
-
-#### Manual / Custom Names
-
-If a custom name is preferred rather than the default one assigned by the `Makefile`, use the `./build.sh` script contained in each subfolder, e.g. [generic/.build.sh](./generic/build.sh). This script will build a docker image with the name provided as the first argument and with a specified `non-root` user (`default=docker`) for the docker container.
-
-```
-./build.sh GIVEN_IMAGE_NAME
-```
+If you wish to give other names to the resulting docker images, modify the name argument in the `Makefile` for the corresponding image.
 
 #### The ENTRYPOINT `entrypoint.sh` script
 For each image / subfolder, the bash script [entrypoint.sh](./entrypoint.sh) will be copied at build time into the Docker image and will be ran as the default _entrypoint_ when the container is launched. The script currently _bind mounts_ the Dockerfile's `extern` _volume_ into the `$HOME/host_files` folder of the `non-root` user.
@@ -73,7 +65,7 @@ After installation, launch Firefox from the terminal. You are now running Firefo
 
 ### Bash auto-completion for `./run.sh`
 
-When using `./run.sh` in a bash shell to launch the container, source the [bash_custom_completion.sh](./configs/bash_docker_images_completion.sh) script. Now you should be able to get the names of the available docker images on your system whenever you type 
+When using `./run.sh` in a bash shell to launch the container, source the [configs/bash_docker_images_completion.sh](./configs/bash_docker_images_completion.sh) script. Now you should be able to get the names of the available docker images on your system whenever you type 
 ```
 ./run.sh <TAB><TAB>
 ```
@@ -84,5 +76,5 @@ When using `./run.sh` in a bash shell to launch the container, source the [bash_
 The `Oh My ZSH`, `terminator` configuration and `Makefile` structure based on 
 * [turlucode/ros-docker-gui/](https://github.com/turlucode/ros-docker-gui/)
 
-The script(s) structure and user creation adapted from
+Build/run script(s) structure adapted from
 * [jbohren/rosdocked](https://github.com/jbohren/rosdocked)
