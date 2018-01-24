@@ -64,18 +64,13 @@ RUN wget https://github.com/robbyrussell/oh-my-zsh/raw/master/tools/install.sh -
 # Copy Terminator Configuration file
 # '$HOME' does not seem to work with the COPY directive
 RUN mkdir -p $HOME/.config/terminator/
-COPY config_files/terminator_config /home/${user}/.config/terminator/config
-COPY config_files/bash_aliases /home/${user}/.bash_aliases
+COPY configs/terminator_config /home/${user}/.config/terminator/config
+COPY configs/bash_aliases /home/${user}/.bash_aliases
 COPY entrypoint.sh /home/${user}/entrypoint.sh
 RUN sudo chmod +x /home/${user}/entrypoint.sh \
  && sudo chown ${user}:${user} /home/${user}/entrypoint.sh \
   	/home/${user}/.config/terminator/config \
   	 /home/${user}/.bash_aliases
-
-# nvidia-docker hooks
-LABEL com.nvidia.volumes.needed="nvidia_driver"
-ENV PATH /usr/local/nvidia/bin:${PATH}
-ENV LD_LIBRARY_PATH /usr/local/nvidia/lib:/usr/local/nvidia/lib64:${LD_LIBRARY_PATH}
 
 # Add the bash aliases to zsh rc as well
 RUN cat $HOME/.bash_aliases >> $HOME/.zshrc

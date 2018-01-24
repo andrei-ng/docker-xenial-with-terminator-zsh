@@ -14,7 +14,6 @@ THIS_HOST=`hostname`
 NVIDIA_DOCKER_VERSION=$(dpkg -l | grep nvidia-docker | awk '{ print $3 }' | awk -F'[_.]' '{print $1}')
 
 # Determine the appropriate version of the docker run command
-NVIDIA_DOCKER_VERSION=3
 if [ $NVIDIA_DOCKER_VERSION = "1" ]; then
     docker_run_cmd="nvidia-docker run --rm"
 elif [ $NVIDIA_DOCKER_VERSION = "2" ]; then
@@ -40,6 +39,4 @@ $(echo $docker_run_cmd) \
   -v /tmp/.X11-unix:/tmp/.X11-unix:rw \
   -v $HOME/.Xauthority:$home_folder/.Xauthority -e XAUTHORITY=$home_folder/.Xauthority \
   -e DISPLAY=$DISPLAY \
-  -v $HOME/Projects/aghe_repos/public/cpp_tdd_book/my_src_code:$home_folder/my_src_code \
-  -v $HOME/SoftwareTools/Qt:/$home_folder/Qt \
   -it $IMAGE_NAME "$@"
