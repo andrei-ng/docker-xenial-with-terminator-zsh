@@ -13,19 +13,16 @@ ARG shell=/bin/bash
 RUN apt-get update && apt-get install -y \
 	lsb-release locales \
 	mesa-utils \
-	git \
-	subversion \
-	nano \
-	terminator \
-	gnome-terminal \
-	wget \
-	curl \
+	cmake build-essential \
+	git subversion \
+	terminator gnome-terminal \
+	wget curl \
 	htop \
 	python3-pip python-pip  \
 	software-properties-common python-software-properties \
 	zsh screen tree \
-	sudo ssh synaptic vim \
-	x11-apps build-essential \
+	sudo ssh synaptic vim nano\
+	x11-apps \
 	libcanberra-gtk* \
  && locale-gen en_US.UTF-8 \
  && pip2 install numpy && pip3 install numpy \
