@@ -24,6 +24,7 @@ docker run --rm \
   --ipc=host \
   --privileged \
   -v /tmp/.X11-unix:/tmp/.X11-unix:rw \
-  -v $HOME/.Xauthority:$home_folder/.Xauthority -e XAUTHORITY=$home_folder/.Xauthority \
+  -v $HOME/.Xauthority:$home_folder/.Xauthority
+  -e XAUTHORITY=$home_folder/.Xauthority \
   -e DISPLAY=$DISPLAY \
   -it $IMAGE_NAME "$@"

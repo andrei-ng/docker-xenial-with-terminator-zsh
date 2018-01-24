@@ -10,7 +10,7 @@ fi
 dUSER=docker
 dSHELL=/usr/bin/zsh
 
-# Copy default config files
+# Copy custom config files
 cp -r ../configs configs
 
 # Build the docker image and specify a user name (default=docker)
