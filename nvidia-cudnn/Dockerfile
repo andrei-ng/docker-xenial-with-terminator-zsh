@@ -2,7 +2,7 @@ FROM nvidia/cuda:9.0-devel-ubuntu16.04
 
 MAINTAINER Andrei Gherghescu <gandrein@gmail.com>
 
-LABEL Description="Ubuntu Xenial 16.04 with custom shell environment and NVIDIA CUDA 9" Version="1.0"
+LABEL Description="Ubuntu Xenial 16.04 with custom shell environment" Version="1.0"
 
 # Arguments
 ARG user=docker
@@ -68,11 +68,6 @@ RUN sudo chmod +x /home/${user}/entrypoint.sh \
  && sudo chown ${user}:${user} /home/${user}/entrypoint.sh \
   	/home/${user}/.config/terminator/config \
   	 /home/${user}/.bash_aliases
-
-# nvidia-docker hooks
-LABEL com.nvidia.volumes.needed="nvidia_driver"
-ENV PATH /usr/local/nvidia/bin:${PATH}
-ENV LD_LIBRARY_PATH /usr/local/nvidia/lib:/usr/local/nvidia/lib64:${LD_LIBRARY_PATH}
 
 # Add the bash aliases to zsh rc as well
 RUN cat $HOME/.bash_aliases >> $HOME/.zshrc

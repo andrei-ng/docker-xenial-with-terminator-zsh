@@ -6,12 +6,20 @@ if [ "$#" -ne 1 ]; then
   return 1
 fi
 
+# Copy custom config files
+cp -r ../configs configs
+
+# Copy the generic Dockerfile and the generic entrypoint script
+cp ../generic/Dockerfile .
+cp ../generic/entrypoint.sh .
+
+# Replace BASE IMAGE NAME with CUDA9 image name
+BASE_IMAGE_NAME="nvidia/cuda:9.0-devel-ubuntu16.04"
+sed -i '/FROM ubuntu:xenial/c\'"FROM $BASE_IMAGE_NAME" Dockerfile
+
 # Set custom arguments
 dUSER=docker
 dSHELL=/usr/bin/zsh
-
-# Copy default config files
-cp -r ../configs configs
 
 # Build the docker image and specify a user name (default=docker)
 # and a UID value (default current user's UID)

@@ -1,2 +1,6 @@
 # Ignore temp files
 *.*~
+
+# Ignore automatically created Dockerfiles
+nvidia-cudnn/Dockerfile
+nvidia-cudnn/entrypoint.sh
