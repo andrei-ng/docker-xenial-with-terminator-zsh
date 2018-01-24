@@ -10,6 +10,9 @@ fi
 dUSER=docker
 dSHELL=/usr/bin/zsh
 
+# Copy default config files
+cp -r ../config_files config_files
+
 # Build the docker image and specify a user name (default=docker)
 # and a UID value (default current user's UID)
 docker build\
@@ -17,3 +20,6 @@ docker build\
   --build-arg uid=$UID\
   --build-arg shell=$dSHELL\
   -t $1 .
+
+ # Remove config_files folder
+ rm -rf config_files
