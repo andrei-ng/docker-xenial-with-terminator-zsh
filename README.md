@@ -9,7 +9,7 @@ The image is customized such that:
 * [Oh My ZSH](http://ohmyz.sh/) is installed and configured for the non-root user
 * docker containers are launched with [`terminator`](https://gnometerminator.blogspot.nl/p/introduction.html) as the default terminal emulator (as opposed to default `gnome-terminal`)
 * host mounted volumes are re-bound to a `data` folder within the container's user's `$HOME` folder 
-* bash completion for Docker image names and tags when launching the container by using the `./run.sh` script
+* bash completion for Docker image names and tags when launching the container by using the `./run_docker.sh` script
 
 The user has the option of building three different types of Docker images
 1. a generic image for non-Nvidia based PCs
@@ -38,13 +38,13 @@ For each image / subfolder, the bash script [entrypoint.sh](./entrypoint.sh) wil
 
 ### Running a container
 
-Navigate to the chosen image subfolder. In a terminal type [./run.sh](./run.sh) followed by the name chosen in the previous step or with the default name assigned by the `Makefile`. This will run and remove the docker container upon exit (i.e., it is ran with the `--rm` flag).
+Navigate to the chosen image subfolder. In a terminal type [./run_docker.sh](./run_docker.sh) followed by the name chosen in the previous step or with the default name assigned by the `Makefile`. This will run and remove the docker container upon exit (i.e., it is ran with the `--rm` flag).
 ```
-./run.sh GIVEN_IMAGE_NAME
+./run_docker.sh GIVEN_IMAGE_NAME
 ```
 e.g. for the second Docker image created with the `make` command, do
 ```
-./run.sh codookie/xenial:terminator-nvidia 
+./run_docker.sh codookie/xenial:terminator-nvidia 
 ```
 
 Whatever data you require from the host, mount it in the container's `extern` folder, e.g. following the bellow structure 
@@ -63,11 +63,11 @@ sudo apt install firefox
 ```
 After installation, launch Firefox from the terminal. You are now running Firefox from a Docker container :smiley:.
 
-### Bash auto-completion for `./run.sh`
+### Bash auto-completion for `./run_docker.sh`
 
-When using `./run.sh` in a bash shell to launch the container, source the [configs/bash_docker_images_completion.sh](./configs/bash_docker_images_completion.sh) script. Now you should be able to get the names of the available docker images on your system whenever you type 
+When using `./run_docker.sh` in a bash shell to launch the container, source the [configs/bash_docker_images_completion.sh](./configs/bash_docker_images_completion.sh) script. Now you should be able to get the names of the available docker images on your system whenever you type 
 ```
-./run.sh <TAB><TAB>
+./run_docker.sh <TAB><TAB>
 ```
 
 

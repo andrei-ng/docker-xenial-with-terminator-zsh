@@ -17,4 +17,4 @@ _docker_autocomplete_image_and_tags () {
   esac
 }
 
-complete -F _docker_autocomplete_image_and_tags ./run.sh
+complete -F _docker_autocomplete_image_and_tags ./run_docker.sh
