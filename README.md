@@ -5,7 +5,7 @@ This repository is an example of a Docker Image customization having as base ima
 * Ubuntu 16.04 (Xenial) with Nvidia CUDA toolkit and cuDNN library
 
 The image is customized such that:
-* the docker image is created with a non-root user (defaul user-name `docker`)
+* the docker image is created with a non-root user (default user-name `docker`)
 * [Oh My ZSH](http://ohmyz.sh/) is installed and configured for the non-root user
 * docker containers are launched with [`terminator`](https://gnometerminator.blogspot.nl/p/introduction.html) as the default terminal emulator (as opposed to default `gnome-terminal`)
 * host mounted volumes are re-bound to a `data` folder within the container's user's `$HOME` folder 
@@ -25,11 +25,11 @@ This docker image has been build and tested on a machine running Ubuntu 16.04 wi
 
 ####  Dependencies
 
-For the 2. and 3. type of images to succesfully run GUIs or make use of the cuDNN library, the user must install  [`nvidia-docker (1.0)`](https://github.com/NVIDIA/nvidia-docker/wiki/Installation-(version-1.0))
+For the 2. and 3. type of images to successfully run GUIs or make use of the cuDNN library, the user must install  [`nvidia-docker (1.0)`](https://github.com/NVIDIA/nvidia-docker/wiki/Installation-(version-1.0))
 
 ### Building the image
 
-The [Makefile](Makefile) contained in the repository allows you to create either of the three images with the `make` command. The `make` utility will provide the autocompletion for the image name you want to build.
+The [Makefile](Makefile) contained in the repository allows you to create either of the three images with the `make` command. The `make` utility will provide the auto-completion for the image name you want to build.
 
 If you wish to give other names to the resulting docker images, modify the name argument in the `Makefile` for the corresponding image.
 
@@ -38,7 +38,7 @@ For each image / subfolder, the bash script [entrypoint.sh](./entrypoint.sh) wil
 
 ### Running a container
 
-Navigate to the chosen image subfolder. In a terminal type [./run_docker.sh](./run_docker.sh) followed by the name chosen in the previous step or with the default name assigned by the `Makefile`. This will run and remove the docker container upon exit (i.e., it is ran with the `--rm` flag).
+Navigate to the chosen image sub-folder. In a terminal type [./run_docker.sh](./run_docker.sh) followed by the name chosen in the previous step or with the default name assigned by the `Makefile`. This will run and remove the docker container upon exit (i.e., it is ran with the `--rm` flag).
 ```
 ./run_docker.sh GIVEN_IMAGE_NAME
 ```
